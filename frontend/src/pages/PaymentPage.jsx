@@ -91,7 +91,7 @@ export function PaymentSuccessPage() {
 
 // ─── Payment Cancel Page ─────────────────────────────────────────────────────
 export function PaymentCancelPage() {
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   // const orderId = searchParams.get("order");
 

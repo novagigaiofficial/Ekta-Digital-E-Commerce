@@ -64,7 +64,9 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {git add .
+git commit -m "Fix eslint comment placement"
+git push origin main
     if (user) {
       api.get("/addresses")
         .then((r) => setSavedAddresses(r.data))
