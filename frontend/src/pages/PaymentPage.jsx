@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CheckCircle, XCircle, Loader, Copy, ExternalLink } from "lucide-react";
+import { CheckCircle, XCircle, Loader, Copy } from "lucide-react";
 import api from "../lib/api";
 import Button from "../components/ui/Button";
 import { formatPrice } from "../lib/utils";
@@ -11,7 +11,9 @@ export function PaymentSuccessPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const orderId    = searchParams.get("order");
-  const ppOrderId  = searchParams.get("token"); // PayPal sends token param
+  const ppOrderId  = searchParams.getgit add .
+git commit -m "Fix remaining eslint warnings"
+git push origin main("token"); // PayPal sends token param
   const [status, setStatus] = useState("loading");
   const [order,  setOrder]  = useState(null);
 

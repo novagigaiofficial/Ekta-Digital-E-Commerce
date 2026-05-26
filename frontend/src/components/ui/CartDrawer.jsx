@@ -5,7 +5,7 @@ import useCartStore from "../../store/cartStore";
 import { formatPrice } from "../../lib/utils";
 
 export default function CartDrawer({ open, onClose }) {
-  const { items, removeItem, updateQty, getTotal } = useCartStore();
+  const { items, updateQty, getTotal } = useCartStore();
   const navigate  = useNavigate();
   const total     = getTotal();
   const points    = Math.floor(total / 1000);

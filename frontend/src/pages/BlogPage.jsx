@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Clock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { observeFadeUp } from "../lib/utils";
 import toast from "react-hot-toast";
 
@@ -14,7 +13,6 @@ const POSTS = [
 ];
 
 export default function BlogPage() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [done,  setDone]  = useState(false);
   useEffect(() => { setTimeout(observeFadeUp, 100); }, []);

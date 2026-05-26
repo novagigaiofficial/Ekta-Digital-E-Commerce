@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Truck, CreditCard, ShieldCheck, Globe, Star, ArrowRight, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Truck, CreditCard, ShieldCheck, Globe, Star, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import api from "../lib/api";
 import ProductCard from "../components/ui/ProductCard";
-import { formatPrice, observeFadeUp } from "../lib/utils";
+import { observeFadeUp } from "../lib/utils";
 
 const FALLBACK_SLIDES = [
   {
