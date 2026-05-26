@@ -10,10 +10,8 @@ import toast from "react-hot-toast";
 export function PaymentSuccessPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const orderId    = searchParams.get("order");
-  const ppOrderId  = searchParams.getgit add .
-git commit -m "Fix remaining eslint warnings"
-git push origin main("token"); // PayPal sends token param
+  const orderId = searchParams.get("order");
+  const ppOrderId = searchParams.get("token");
   const [status, setStatus] = useState("loading");
   const [order,  setOrder]  = useState(null);
 
