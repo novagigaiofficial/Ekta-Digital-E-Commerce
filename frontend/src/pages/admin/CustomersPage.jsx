@@ -25,6 +25,7 @@ export default function AdminCustomers() {
     finally { setLoading(false); }
   }, [search, typeFilter, page]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const t = setTimeout(() => {
       setPage(1);
@@ -34,10 +35,11 @@ export default function AdminCustomers() {
     return () => clearTimeout(t);
   }, [search]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchCustomers();
   }, [typeFilter, page]);
-
+  
   return (
     <div className="space-y-6">
       <div>

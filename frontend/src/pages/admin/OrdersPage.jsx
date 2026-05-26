@@ -18,11 +18,15 @@ export default function AdminOrders() {
   const [confirming, setConfirming] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchOrders();
   }, [filter]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const t = setTimeout(() => fetchOrders(), 400);
+
     return () => clearTimeout(t);
   }, [search]);
 

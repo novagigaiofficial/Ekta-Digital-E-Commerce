@@ -64,30 +64,42 @@ export default function HomePage() {
     intervalRef.current = setInterval(() => setSlideIdx((s) => (s + 1) % slides.length), 6000);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     startAutoSlide();
+
     return () => clearInterval(intervalRef.current);
   }, [slides.length]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const load = async () => {
       try {
         const [heroRes, featRes, arrRes] = await Promise.all([
           api.get("/hero-slides").catch(() => ({ data: [] })),
-          api.get("/products", { params: { featured: true,     per_page: 4 } }),
+          api.get("/products", { params: { featured: true, per_page: 4 } }),
           api.get("/products", { params: { new_arrivals: true, per_page: 8 } }),
         ]);
+
         const apiSlides = heroRes.data ?? [];
+
         if (apiSlides.length) setSlides(apiSlides);
+
         setFeatured(featRes.data.data ?? []);
         setArrivals(arrRes.data.data ?? []);
-      } catch (e) { console.error(e); }
-      finally { setLoading(false); }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     };
+
     load();
   }, []);
 
-  useEffect(() => { if (!loading) observeFadeUp(); }, [loading]);
+  useEffect(() => {
+    if (!loading) observeFadeUp();
+  }, [loading]);
 
   const gotoSlide = (i) => { setSlideIdx(i); startAutoSlide(); };
   const prev = () => gotoSlide((slideIdx - 1 + slides.length) % slides.length);

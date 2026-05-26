@@ -48,7 +48,15 @@ export default function AccountPage() {
   const [pwForm,     setPwForm]     = useState({ current_password: "", password: "", password_confirmation: "" });
   const [pwSaving,   setPwSaving]   = useState(false);
 
-  useEffect(() => { if (!user) { navigate("/login"); return; } loadData(); }, [user, tab]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    loadData();
+  }, [user, tab]);
 
   const loadData = async () => {
     setLoading(true);

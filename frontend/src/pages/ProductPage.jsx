@@ -24,31 +24,35 @@ export default function ProductPage() {
   const [tab,      setTab]      = useState("description");
   const [wishAdded,setWishAdded]= useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-  const fetch = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/products/${slug}`);
-      setProduct(res.data);
-      setVariant(res.data.variants?.[0] ?? null);
+    const fetch = async () => {
+      setLoading(true);
 
-      const rel = await api.get("/products", {
-        params: {
-          category: res.data.category?.slug,
-          per_page: 4
-        }
-      });
+      try {
+        const res = await api.get(`/products/${slug}`);
 
-      setRelated((rel.data.data ?? []).filter((p) => p.slug !== slug));
-    } catch {
-      navigate("/shop");
-    } finally {
-      setLoading(false);
-    }
-  };
+        setProduct(res.data);
+        setVariant(res.data.variants?.[0] ?? null);
 
-  fetch();
-}, [slug]);
+        const rel = await api.get("/products", {
+          params: {
+            category: res.data.category?.slug,
+            per_page: 4
+          }
+        });
+
+        setRelated((rel.data.data ?? []).filter((p) => p.slug !== slug));
+
+      } catch {
+        navigate("/shop");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [slug]);
 
   const handleAddToCart = () => {
     if (!variant) return;

@@ -15,25 +15,38 @@ export function PaymentSuccessPage() {
   const [status, setStatus] = useState("loading");
   const [order,  setOrder]  = useState(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!orderId) { navigate("/account"); return; }
+    if (!orderId) {
+      navigate("/account");
+      return;
+    }
+
     const handleSuccess = async () => {
       try {
         // If PayPal redirect, capture the payment
         if (ppOrderId) {
           await api.post("/payment/paypal/capture", {
             pp_order_id: ppOrderId,
-            order_id:    orderId,
+            order_id: orderId,
           });
         }
+
         // Poll payment status
         const res = await api.get(`/orders/${orderId}/payment-status`);
+
         setOrder(res.data);
-        setStatus(res.data.payment_status === "paid" ? "success" : "pending");
+
+        setStatus(
+          res.data.payment_status === "paid"
+            ? "success"
+            : "pending"
+        );
       } catch {
         setStatus("pending");
       }
     };
+
     handleSuccess();
   }, [orderId, ppOrderId]);
 

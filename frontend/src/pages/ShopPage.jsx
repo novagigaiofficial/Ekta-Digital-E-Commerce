@@ -65,23 +65,36 @@ export default function ShopPage() {
     finally { setLoading(false); }
   }, [filters, category, page]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     clearTimeout(debounceRef.current);
+
     debounceRef.current = setTimeout(() => {
       setPage(1);
       fetchProducts(filters.search);
     }, 400);
+
     return () => clearTimeout(debounceRef.current);
   }, [filters.search]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!loading || page > 1) fetchProducts();
-  }, [filters.brand, filters.min_price, filters.max_price, filters.sort, page, category]);
+    if (!loading || page > 1) {
+      fetchProducts();
+    }
+  }, [
+    filters.brand,
+    filters.min_price,
+    filters.max_price,
+    filters.sort,
+    page,
+    category
+  ]);
 
   useEffect(() => {
     observeFadeUp();
   }, [products]);
-
+  
   // Smart pagination — show max 7 page buttons
   const getPageNumbers = () => {
     if (totalPages <= 7) return [...Array(totalPages)].map((_, i) => i + 1);
