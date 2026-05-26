@@ -25,18 +25,30 @@ export default function ProductPage() {
   const [wishAdded,setWishAdded]= useState(false);
 
   useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get(`/products/${slug}`);
-        setProduct(res.data);
-        setVariant(res.data.variants?.[0] ?? null);
-        const rel = await api.get("/products", { params: { category: res.data.category?.slug, per_page: 4 } });
-        setRelated((rel.data.data ?? []).filter((p) => p.slug !== slug));
-      } catch { navigate("/shop"); } finally { setLoading(false); }
-    };
-    fetch();
-  }, [slug]);
+  const fetch = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/products/${slug}`);
+      setProduct(res.data);
+      setVariant(res.data.variants?.[0] ?? null);
+
+      const rel = await api.get("/products", {
+        params: {
+          category: res.data.category?.slug,
+          per_page: 4
+        }
+      });
+
+      setRelated((rel.data.data ?? []).filter((p) => p.slug !== slug));
+    } catch {
+      navigate("/shop");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetch();
+}, [slug]);
 
   const handleAddToCart = () => {
     if (!variant) return;

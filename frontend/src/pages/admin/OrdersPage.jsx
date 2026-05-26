@@ -18,8 +18,9 @@ export default function AdminOrders() {
   const [confirming, setConfirming] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
 
-  // Immediate refetch when filter tab changes; debounce for search typing
-  useEffect(() => { fetchOrders(); }, [filter]);
+  useEffect(() => {
+    fetchOrders();
+  }, [filter]);
   useEffect(() => {
     const t = setTimeout(() => fetchOrders(), 400);
     return () => clearTimeout(t);

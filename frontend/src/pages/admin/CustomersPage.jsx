@@ -25,13 +25,18 @@ export default function AdminCustomers() {
     finally { setLoading(false); }
   }, [search, typeFilter, page]);
 
-  // Debounce search
   useEffect(() => {
-    const t = setTimeout(() => { setPage(1); fetchCustomers(); }, 400);
+    const t = setTimeout(() => {
+      setPage(1);
+      fetchCustomers();
+    }, 400);
+
     return () => clearTimeout(t);
   }, [search]);
 
-  useEffect(() => { fetchCustomers(); }, [typeFilter, page]);
+  useEffect(() => {
+    fetchCustomers();
+  }, [typeFilter, page]);
 
   return (
     <div className="space-y-6">
