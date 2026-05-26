@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+body {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─── Glass nav ─────────────────────────────────────────────────────────── */
+.glass-nav {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: saturate(200%) blur(24px);
+  -webkit-backdrop-filter: saturate(200%) blur(24px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.08);
+}
+
+/* ─── Scroll animations ─────────────────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+              transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.fade-in.visible { opacity: 1; }
+
+/* ─── Product card ──────────────────────────────────────────────────────── */
+.product-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.35s cubic-bezier(0.16,1,0.3,1),
+              transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  overflow: hidden;
+}
+.product-card:hover {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+}
+
+/* ─── Apple-style section title ─────────────────────────────────────────── */
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #008080;
+}
+.section-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #1d1d1f;
+}
+.section-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 400;
+  color: #6e6e73;
+  line-height: 1.6;
+}
+
+/* ─── Liquid hero gradient ──────────────────────────────────────────────── */
+.hero-gradient {
+  background: radial-gradient(ellipse 80% 50% at 60% 40%, rgba(0,128,128,0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 60% at 20% 80%, rgba(0,128,128,0.06) 0%, transparent 60%),
+              #fbfbfd;
+}
+
+/* ─── Noise texture overlay ─────────────────────────────────────────────── */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ─── Shimmer loading ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f5f5f7 25%, #ebebeb 37%, #f5f5f7 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* ─── WhatsApp pulse ────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0;   }
+}
+.whatsapp-pulse::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25D366;
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* ─── Smooth scrollbar ──────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Focus rings ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #008080;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Line clamp ────────────────────────────────────────────────────────── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Apple-style blur card ─────────────────────────────────────────────── */
+.blur-card {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* ─── Hero slide transition ─────────────────────────────────────────────── */
+@keyframes hero-in {
+  from { opacity: 0; transform: scale(1.04) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+.hero-content { animation: hero-in 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ─── Number ticker ─────────────────────────────────────────────────────── */
+@keyframes count-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.count-up { animation: count-up 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ─── Stagger helpers ───────────────────────────────────────────────────── */
+.stagger > * { transition-delay: calc(var(--i, 0) * 80ms); }
+
+/* ─── Hero cinematic animations ─────────────────────────────────────────── */
+@keyframes hero-zoom {
+  from { transform: scale(1.08); opacity: 0.85; }
+  to   { transform: scale(1);    opacity: 1;    }
+}
+
+@keyframes hero-text-in {
+  from { opacity: 0; transform: translateY(28px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+}
+
+@keyframes slide-progress {
+  from { width: 0%;    }
+  to   { width: 100%;  }
+}
+
+@keyframes scroll-dot {
+  0%, 100% { transform: translateY(0);   opacity: 1;   }
+  50%       { transform: translateY(6px); opacity: 0.3; }
+}
