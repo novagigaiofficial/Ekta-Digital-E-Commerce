@@ -18,6 +18,10 @@ export default function AdminOrders() {
   const [confirming, setConfirming] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
 
+  const fetchOrders = async () => {
+    // code
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchOrders();

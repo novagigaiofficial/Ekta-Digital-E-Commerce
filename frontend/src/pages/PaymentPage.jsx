@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 export function PaymentSuccessPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const orderId = searchParams.get("order");
+  // const orderId = searchParams.get("order");
   const ppOrderId = searchParams.get("token");
   const [status, setStatus] = useState("loading");
   const [order,  setOrder]  = useState(null);
@@ -93,7 +93,7 @@ export function PaymentSuccessPage() {
 export function PaymentCancelPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const orderId = searchParams.get("order");
+  // const orderId = searchParams.get("order");
 
   return (
     <div className="min-h-screen bg-soft flex items-center justify-center px-6 py-16">
