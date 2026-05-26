@@ -56,14 +56,12 @@ export default function CheckoutPage() {
   const [promoLoading,  setPromoLoading]  = useState(false);
 
   // Redirect if cart is empty
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (items.length === 0 && !done) {
       toast.error("Your cart is empty.");
       navigate("/shop");
     }
-  }, []);
+  }, [items.length, done, navigate]);
 
   useEffect(() => {
     if (user) {

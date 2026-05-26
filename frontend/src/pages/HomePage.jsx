@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Truck, CreditCard, ShieldCheck, Globe, Star, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import api from "../lib/api";
@@ -59,19 +59,17 @@ export default function HomePage() {
   const navigate    = useNavigate();
   const intervalRef = useRef(null);
 
-  const startAutoSlide = () => {
+  const startAutoSlide = useCallback(() => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => setSlideIdx((s) => (s + 1) % slides.length), 6000);
-  };
+  }, [slides.length]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     startAutoSlide();
 
     return () => clearInterval(intervalRef.current);
-  }, [slides.length]);
+  }, [startAutoSlide]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const load = async () => {
       try {
@@ -95,7 +93,7 @@ export default function HomePage() {
     };
 
     load();
-  }, []);
+  }, []); // intentionally run once on mount
 
   useEffect(() => {
     if (!loading) observeFadeUp();

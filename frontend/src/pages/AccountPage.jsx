@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Package, Star, MapPin, Settings, LogOut, ChevronRight, Download, RotateCcw, Plus, Lock, CheckCircle } from "lucide-react";
 import useAuthStore from "../store/authStore";
@@ -48,17 +48,7 @@ export default function AccountPage() {
   const [pwForm,     setPwForm]     = useState({ current_password: "", password: "", password_confirmation: "" });
   const [pwSaving,   setPwSaving]   = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-
-    loadData();
-  }, [user, tab]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       if (tab === "orders"   || tab === "overview") { const r = await api.get("/orders");   setOrders(r.data.data ?? []); }
@@ -66,7 +56,16 @@ export default function AccountPage() {
       if (tab === "addresses")                       { const r = await api.get("/addresses"); setAddresses(r.data); }
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
-  };
+  }, [tab]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    loadData();
+  }, [user, tab, navigate, loadData]);
 
   const handleLogout = async () => { await logout(); navigate("/"); };
 

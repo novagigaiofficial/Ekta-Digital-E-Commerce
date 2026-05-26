@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import api from "../../lib/api";
 
@@ -11,34 +11,46 @@ export default function AdminCustomers() {
   const [lastPage,  setLastPage]  = useState(1);
   const [total,     setTotal]     = useState(0);
 
-  const fetchCustomers = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = { page };
-      if (search)                          params.search       = search;
-      if (typeFilter && typeFilter !== "all") params.account_type = typeFilter;
-      const res = await api.get("/admin/customers", { params });
-      setCustomers(res.data.data ?? []);
-      setLastPage(res.data.last_page ?? 1);
-      setTotal(res.data.total ?? 0);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  }, [search, typeFilter, page]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Search — debounced, resets to page 1
   useEffect(() => {
-    const t = setTimeout(() => {
+    const t = setTimeout(async () => {
       setPage(1);
-      fetchCustomers();
+      setLoading(true);
+      try {
+        const params = { page: 1 };
+        if (search) params.search = search;
+        if (typeFilter && typeFilter !== "all") params.account_type = typeFilter;
+        const res = await api.get("/admin/customers", { params });
+        setCustomers(res.data.data ?? []);
+        setLastPage(res.data.last_page ?? 1);
+        setTotal(res.data.total ?? 0);
+      } catch (e) { console.error(e); }
+      finally { setLoading(false); }
     }, 400);
 
     return () => clearTimeout(t);
-  }, [search]);
+  }, [search]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Type filter + pagination — fire immediately
   useEffect(() => {
-    fetchCustomers();
-  }, [typeFilter, page]);
+    let active = true;
+    const run = async () => {
+      setLoading(true);
+      try {
+        const params = { page };
+        if (search) params.search = search;
+        if (typeFilter && typeFilter !== "all") params.account_type = typeFilter;
+        const res = await api.get("/admin/customers", { params });
+        if (!active) return;
+        setCustomers(res.data.data ?? []);
+        setLastPage(res.data.last_page ?? 1);
+        setTotal(res.data.total ?? 0);
+      } catch (e) { console.error(e); }
+      finally { if (active) setLoading(false); }
+    };
+    run();
+    return () => { active = false; };
+  }, [typeFilter, page]); // eslint-disable-line react-hooks/exhaustive-deps
   
   return (
     <div className="space-y-6">

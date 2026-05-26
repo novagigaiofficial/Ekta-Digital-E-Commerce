@@ -1,5 +1,5 @@
 import getToken from "../../lib/getToken";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Download, CheckCircle, Truck } from "lucide-react";
 import api from "../../lib/api";
 import { formatPrice } from "../../lib/utils";
@@ -18,23 +18,17 @@ export default function AdminOrders() {
   const [confirming, setConfirming] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchOrders();
-  }, [filter]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    const t = setTimeout(() => fetchOrders(), 400);
-
-    return () => clearTimeout(t);
-  }, [search]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true);
     try{const res=await api.get("/admin/orders",{params:{status:filter,search}});setOrders(res.data.data??[]);}
     catch(e){console.error(e);}finally{setLoading(false);}
-  };
+  }, [filter, search]);
+
+  useEffect(() => {
+    const delay = search ? 400 : 0;
+    const t = setTimeout(() => fetchOrders(), delay);
+    return () => clearTimeout(t);
+  }, [fetchOrders, search]);
 
   const updateStatus = async (id,status) => {
     if(status==="delivered"){setConfirming(true);return;}

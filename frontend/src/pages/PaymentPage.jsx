@@ -15,7 +15,6 @@ export function PaymentSuccessPage() {
   const [status, setStatus] = useState("loading");
   const [order,  setOrder]  = useState(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!orderId) {
       navigate("/account");
@@ -48,7 +47,7 @@ export function PaymentSuccessPage() {
     };
 
     handleSuccess();
-  }, [orderId, ppOrderId]);
+  }, [orderId, ppOrderId, navigate]);
 
   if (status === "loading") return (
     <div className="min-h-screen flex items-center justify-center">

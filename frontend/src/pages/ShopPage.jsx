@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { SlidersHorizontal, X, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import api from "../lib/api";
@@ -51,45 +51,47 @@ export default function ShopPage() {
     ? category.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : "All Products";
 
-  const fetchProducts = useCallback(async (searchOverride) => {
-    setLoading(true);
-    try {
-      const params = { ...filters, page };
-      if (searchOverride !== undefined) params.search = searchOverride;
-      if (category) params.category = category;
-      const res = await api.get("/products", { params });
-      setProducts(res.data.data ?? []);
-      setTotalPages(res.data.last_page ?? 1);
-      setTotal(res.data.total ?? 0);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  }, [filters, category, page]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Search — debounced, resets to page 1
   useEffect(() => {
     clearTimeout(debounceRef.current);
 
-    debounceRef.current = setTimeout(() => {
+    debounceRef.current = setTimeout(async () => {
       setPage(1);
-      fetchProducts(filters.search);
+      setLoading(true);
+      try {
+        const params = { ...filters, page: 1 };
+        if (category) params.category = category;
+        const res = await api.get("/products", { params });
+        setProducts(res.data.data ?? []);
+        setTotalPages(res.data.last_page ?? 1);
+        setTotal(res.data.total ?? 0);
+      } catch (e) { console.error(e); }
+      finally { setLoading(false); }
     }, 400);
 
     return () => clearTimeout(debounceRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.search]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Other filters + pagination — fire immediately
   useEffect(() => {
-    if (!loading || page > 1) {
-      fetchProducts();
-    }
-  }, [
-    filters.brand,
-    filters.min_price,
-    filters.max_price,
-    filters.sort,
-    page,
-    category
-  ]);
+    let active = true;
+    const run = async () => {
+      setLoading(true);
+      try {
+        const params = { ...filters, page };
+        if (category) params.category = category;
+        const res = await api.get("/products", { params });
+        if (!active) return;
+        setProducts(res.data.data ?? []);
+        setTotalPages(res.data.last_page ?? 1);
+        setTotal(res.data.total ?? 0);
+      } catch (e) { console.error(e); }
+      finally { if (active) setLoading(false); }
+    };
+    run();
+    return () => { active = false; };
+  }, [filters.brand, filters.min_price, filters.max_price, filters.sort, page, category]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     observeFadeUp();

@@ -24,7 +24,6 @@ export default function ProductPage() {
   const [tab,      setTab]      = useState("description");
   const [wishAdded,setWishAdded]= useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
@@ -52,7 +51,7 @@ export default function ProductPage() {
     };
 
     fetch();
-  }, [slug]);
+  }, [slug, navigate]);
 
   const handleAddToCart = () => {
     if (!variant) return;
