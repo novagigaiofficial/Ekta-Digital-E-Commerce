@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Search } from "lucide-react";
 import api from "../../lib/api";
-import { formatPrice } from "../../lib/utils";
 
 export default function AdminCustomers() {
   const [customers, setCustomers] = useState([]);

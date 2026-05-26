@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { TrendingUp, ShoppingBag, Users, MessageSquare, AlertTriangle } from "lucide-react";
 import api from "../../lib/api";
 import { formatPrice } from "../../lib/utils";
-import toast from "react-hot-toast";
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
