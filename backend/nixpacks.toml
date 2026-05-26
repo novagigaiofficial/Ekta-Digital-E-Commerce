@@ -16,6 +16,7 @@ nixPkgs = [
 
 [phases.install]
 cmds = [
+  "mkdir -p bootstrap/cache",
   "composer install --no-dev --optimize-autoloader"
 ]
 
