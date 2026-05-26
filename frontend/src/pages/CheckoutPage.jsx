@@ -56,6 +56,7 @@ export default function CheckoutPage() {
   const [promoLoading,  setPromoLoading]  = useState(false);
 
   // Redirect if cart is empty
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (items.length === 0 && !done) {
@@ -64,9 +65,7 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  useEffect(() => {git add .
-git commit -m "Fix eslint comment placement"
-git push origin main
+  useEffect(() => {
     if (user) {
       api.get("/addresses")
         .then((r) => setSavedAddresses(r.data))
